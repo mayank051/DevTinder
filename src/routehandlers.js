@@ -60,6 +60,17 @@ app.use("/users", userAuth, (req, res, next) => {
   res.send("Users Data Fetched successfully");
 });
 
+//Error Handling - Try to wrap all the logics inside try catch but in case some unhandled error occured
+app.get("/getUserData", (req, res, next) => {
+  throw new Error("Some Error occured");
+  res.send("User Data Sent");
+});
+
+//Write error handling middleware to the root route so that all unhandled errors are gracefully handled
+app.use("/", (err, req, res, next) => {
+  res.status(500).send("Something went Wrong");
+});
+
 app.listen("3001", () => {
   console.log("Server is started on PORT 3001");
 });
