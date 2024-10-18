@@ -1,6 +1,7 @@
 const express = require("express");
 
 const app = express();
+const { adminAuth, userAuth } = require("./middlewares/auth");
 
 //You can add multiple route handlers for same route and call the next handler using next().
 //But once the response is sent you can't send another response. below are examples-
@@ -35,6 +36,28 @@ app.use("/multipleUsers", (req, res, next) => {
   console.log("Hello From multipleUsers RH2");
   res.send("Response sent from RH2");
   next();
+});
+
+//Why Middlewares are needed. - Suppose before sending any response you want to check if user is
+//authorised or not. So this logic will be common and can be used by multiple routes. Lets check the example for few Admin APIs
+
+app.use("/admin", adminAuth);
+
+app.use("/admin/getAllData", (req, res, next) => {
+  console.log("Inside getAllData");
+  res.send("All the Admin Data sent");
+});
+
+app.use("/admin/deleteUser", (req, res, next) => {
+  res.send("User Deleted successfully");
+});
+
+app.post("/users/login", (req, res, next) => {
+  res.send("User logged in successfully !!");
+});
+
+app.use("/users", userAuth, (req, res, next) => {
+  res.send("Users Data Fetched successfully");
 });
 
 app.listen("3001", () => {
