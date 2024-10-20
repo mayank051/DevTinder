@@ -4,16 +4,11 @@ const User = require("./models/user");
 
 const app = express();
 
+//middleware to read the request JSON and convert it to Javascript Object
+app.use(express.json());
+
 app.post("/signup", async (req, res, next) => {
-  const user = new User({
-    firstName: "Mayank",
-    lastName: "Raj",
-    email: "mayank@raj.com",
-    password: "Mayank@123",
-    age: 27,
-    gender: "Male",
-    randomKey: "xyz",
-  });
+  const user = new User(req.body);
   try {
     await user.save();
     res.send("User Added successfully");
