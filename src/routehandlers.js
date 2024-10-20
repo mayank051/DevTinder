@@ -71,6 +71,19 @@ app.use("/", (err, req, res, next) => {
   res.status(500).send("Something went Wrong");
 });
 
+//query parameter
+app.get("/test", (req, res) => {
+  //For qurey parameter
+  console.log(req.query);
+  res.send("Hello From the test server !!");
+});
+
+//dynamic routes
+app.get("/testdynamics/:userid/:password", (req, res) => {
+  console.log(req.params);
+  res.send("Hello From the test Dynamic route !!");
+});
+
 app.listen("3001", () => {
   console.log("Server is started on PORT 3001");
 });
