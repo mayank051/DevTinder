@@ -14,8 +14,7 @@ app.post("/signup", async (req, res, next) => {
     await user.save();
     res.send("User Added successfully");
   } catch (err) {
-    console.log("err", err);
-    res.status(500).send("Something Went Wrong");
+    res.status(400).send("Error Occurred" + err.message);
   }
 });
 
@@ -28,7 +27,7 @@ app.get("/user", async (req, res) => {
     res.send(user);
   } catch (e) {
     console.log(e);
-    res.status(500).send("Something went wrong!!");
+    res.status(400).send("Error Occurred" + e.message);
   }
 });
 
@@ -38,20 +37,27 @@ app.get("/feed", async (req, res) => {
     const users = await User.find({});
     res.send(users);
   } catch (err) {
-    res.status(500).send("Something went wrong!");
+    res.status(500).send("Error Occurred" + err.message);
   }
 });
 
 //Patch API for updating the user
-app.patch("/user", async (req, res) => {
-  const userId = req.body.userId;
+app.patch("/user/:userId", async (req, res) => {
+  const userId = req.params?.userId;
   const data = req.body;
   try {
-    await User.findByIdAndUpdate(userId, data);
+    const allowedKeys = ["about", "photoUrl", "skills", "password"];
+    const isUpdateAllowed = Object.keys(data).every((key) =>
+      allowedKeys.includes(key)
+    );
+    if (!isUpdateAllowed)
+      throw new Error("Update not Allowed for given fields");
+    await User.findByIdAndUpdate(userId, data, {
+      runValidators: true,
+    });
     res.send("User Updated successfully");
   } catch (err) {
-    console.log("Mayank", err);
-    res.status(500).send("Something went wrong!");
+    res.status(400).send("Error Occurred" + err.message);
   }
 });
 
@@ -63,7 +69,7 @@ app.delete("/user", async (req, res) => {
     console.log("Deleted User", user);
     res.send("User Deleted successfully");
   } catch (e) {
-    res.status(500).send("Something went wrong!");
+    res.status(400).send("Error Occurred" + e.message);
   }
 });
 
