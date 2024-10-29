@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser");
 var jwt = require("jsonwebtoken");
 const connectDB = require("./config/database");
 const User = require("./models/user");
+const { userAuth } = require("./middlewares/auth");
 const { validateSignupData } = require("./utils/validation");
 const privateKey = "devTinder#051";
 
@@ -58,39 +59,28 @@ app.post("/login", async (req, res) => {
 });
 
 //GET API for getting logged in user profile
-app.get("/profile", async (req, res) => {
+app.get("/profile", userAuth, async (req, res) => {
   try {
-    const { token } = req.cookies;
-    if (!token) throw new Error("User not found Please login again");
-
-    //Decode user id from the token
-    const decoded = jwt.verify(token, privateKey);
-    const userId = decoded._id;
-    const user = await User.findOne({ _id: userId });
-    if (!user) {
-      throw new Error("User not found Please login again");
-    }
-
+    const user = req.user;
     res.send(user);
   } catch (err) {
     res.status(400).send("Error: " + err.message);
   }
 });
 
-//GET API to get user details by emailId
-app.get("/user", async (req, res) => {
-  const emailId = req.body.emailId;
+//POST API to send connection Request
+app.post("/sendConnectionRequest", userAuth, (req, res) => {
   try {
-    const user = await User.findOne({ emailId: emailId });
-    if (!user) res.status(404).send("User Not Found");
-    res.send(user);
-  } catch (e) {
-    console.log(e);
-    res.status(400).send("Error Occurred" + e.message);
+    const user = req.user;
+    //TODO: Write logic to send the connection request
+
+    res.send("Request sent by " + user.firstName);
+  } catch (err) {
+    res.status(400).send("Error: " + err.meessage);
   }
 });
 
-//Feed API to get all the list of users
+//GET API to get all the list of users
 app.get("/feed", async (req, res) => {
   try {
     const users = await User.find({});
