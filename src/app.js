@@ -50,7 +50,8 @@ app.post("/login", async (req, res) => {
     if (!isPasswordValid) throw new Error("Invalid Credentials");
 
     //Generate a JWT
-    const token = jwt.sign({ _id: user._id }, privateKey);
+    const token = jwt.sign({ _id: user._id }, privateKey, { expiresIn: "1d" });
+    //set the cookie with token & expiry of 1 day
     res.cookie("token", token);
     res.send("Login Successfull !!!");
   } catch (err) {
