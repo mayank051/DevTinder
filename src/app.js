@@ -1,12 +1,10 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const cookieParser = require("cookie-parser");
-var jwt = require("jsonwebtoken");
 const connectDB = require("./config/database");
 const User = require("./models/user");
 const { userAuth } = require("./middlewares/auth");
 const { validateSignupData } = require("./utils/validation");
-const privateKey = "devTinder#051";
 
 const app = express();
 
@@ -46,12 +44,11 @@ app.post("/login", async (req, res) => {
     const user = await User.findOne({ emailId: emailId });
     if (!user) throw new Error("Invalid Credentials");
 
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.validatePassword(password);
     if (!isPasswordValid) throw new Error("Invalid Credentials");
 
     //Generate a JWT
-    const token = jwt.sign({ _id: user._id }, privateKey, { expiresIn: "1d" });
-    //set the cookie with token & expiry of 1 day
+    const token = user.getJWT();
     res.cookie("token", token);
     res.send("Login Successfull !!!");
   } catch (err) {
