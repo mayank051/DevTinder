@@ -19,6 +19,8 @@
 - POST /request/review/accepted/:requestId
 - POST /request/review/rejected/:requestId
 
+conection status : ignored, interested, accepted, rejected
+
 ## userRouter
 
 - GET user/connections
