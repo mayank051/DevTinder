@@ -62,4 +62,46 @@ requestRouter.post(
   }
 );
 
+//POST API to review(accept/reject) connection Request
+requestRouter.post(
+  "/request/review/:status/:requestId",
+  userAuth,
+  async (req, res) => {
+    try {
+      const user = req.user;
+      const status = req.params.status;
+      const requestId = req.params.requestId;
+
+      const validStatus = ["accepted", "rejected"];
+      if (!validStatus.includes(status))
+        return res.status(400).json({ message: "Invalid status type!" });
+
+      //Find a connectionRequest with requestId & request is for loggedinUser only & status should be interested only
+      const connectionReq = await ConnectionRequest.findOne({
+        _id: requestId,
+        toUserId: user._id,
+        status: "interested",
+      });
+
+      //throw an error if connection request doesn't exists
+      if (!connectionReq)
+        return res
+          .status(400)
+          .json({ message: "Connection Request not found" });
+
+      //Update the status of connectionRequest to accepted or rejcted
+      connectionReq.status = status;
+      const data = await connectionReq.save();
+      return res.status(200).json({
+        message: "Connection Request " + connectionReq.status,
+        data: data,
+      });
+
+      res.status(400).json({ message: "Invalid Request !" });
+    } catch (err) {
+      res.status(400).send("Error: " + err.meessage);
+    }
+  }
+);
+
 module.exports = requestRouter;
