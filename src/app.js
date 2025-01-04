@@ -1,6 +1,7 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/database");
+const cors = require("cors");
 
 //Import Express Routers;
 const authRouter = require("./routes/auth");
@@ -14,6 +15,16 @@ const app = express();
 app.use(express.json());
 //For handling cookies
 app.use(cookieParser());
+
+//For handling cors
+app.use(
+  cors({
+    //whitelisting below domain to access the server
+    origin: "http://localhost:5173",
+    //to set the headers like cookies in browser
+    credentials: true,
+  })
+);
 
 //Add all Route handlers
 app.use("/", authRouter);
