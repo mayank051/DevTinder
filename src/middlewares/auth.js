@@ -4,7 +4,7 @@ var jwt = require("jsonwebtoken");
 const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
-    if (!token) throw new Error("Token not found. Please login Again!!");
+    if (!token) return res.status(401).send("Please Login to continue");
 
     const decodeObj = jwt.decode(token, "devTinder#051");
     const id = decodeObj._id;
