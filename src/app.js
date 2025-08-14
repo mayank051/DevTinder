@@ -39,4 +39,4 @@ connectDB()
       console.log("Server is running on port 3000");
     });
   })
-  .catch((err) => console.err("Database connection Failed"));
+  .catch((err) => console.error("Database connection Failed"));
