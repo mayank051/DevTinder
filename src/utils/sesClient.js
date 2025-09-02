@@ -1,5 +1,3 @@
-require("dotenv").config();
-
 const { SESClient } = require("@aws-sdk/client-ses");
 // Set the AWS Region.
 const REGION = "ap-south-1";

@@ -2,7 +2,6 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 var jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const privateKey = "devTinder#051";
 
 const userSchema = new mongoose.Schema(
   {
@@ -70,7 +69,7 @@ const userSchema = new mongoose.Schema(
 
 userSchema.methods.getJWT = function () {
   const user = this;
-  const token = jwt.sign({ _id: user._id }, privateKey, {
+  const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   });
   return token;

@@ -6,7 +6,7 @@ const userAuth = async (req, res, next) => {
     const { token } = req.cookies;
     if (!token) return res.status(401).send("Please Login to continue");
 
-    const decodeObj = jwt.decode(token, "devTinder#051");
+    const decodeObj = jwt.decode(token, process.env.JWT_SECRET);
     const id = decodeObj._id;
 
     const user = await User.findOne({ _id: id });
