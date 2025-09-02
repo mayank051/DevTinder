@@ -35,3 +35,19 @@ Backend = devTinder.com:3000 => devTinder.com/api (port 3000 is mapped to path /
         proxy_set_header Host $host;
         proxy_cache_bypass $http_upgrade;
     }
+
+# Sending Email via aws SES
+
+    - Create a IAM user
+    - Give Access to AmazonSESFullAccess
+    - Amazon SES: Create an Identity
+    - Verify your domain name
+    - Verify an email address
+    - Install AWS SDK - v3
+    - Code Example - https://docs.aws.amazon.com/sdk-for-javascript/v3/developer-guide/javascript_ses_code_examples.html
+    - Setup SESClient
+    - Access Credentials should be created in IAM under SecurityCredentials Tab
+    - Add the credentials to the env file
+    - Write code for SESClient
+    - Write code for Sending Email address
+    - Make the email dynamic
