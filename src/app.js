@@ -1,8 +1,9 @@
 const express = require("express");
 const cookieParser = require("cookie-parser");
 const connectDB = require("./config/database");
-const cors = require("cors");
 require("dotenv").config();
+require("./utils/cronjob");
+const cors = require("cors");
 
 //Import Express Routers;
 const authRouter = require("./routes/auth");

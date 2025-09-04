@@ -39,7 +39,7 @@ authRouter.post("/signup", async (req, res, next) => {
       </body>
       </html>
     `;
-    await sendEmail.run(emailId, subject, emailBody);
+    const email = await sendEmail.run(subject, emailBody);
 
     //Generate a JWT
     const token = user.getJWT();
@@ -60,6 +60,22 @@ authRouter.post("/login", async (req, res) => {
     const isPasswordValid = await user.validatePassword(password);
     if (!isPasswordValid) throw new Error("Invalid Credentials");
 
+    //Send Welcome Email to user
+    const subject = "Welcome to DevTinder";
+    const emailBody = `
+      <html>
+      <body>
+        <p>Hi ,</p>
+        <p>
+        Welcome to DevTinder Family! Here you can connect with fellow developers, share amazing ideas, and collaborate.
+        </p>
+        <p>Thanks<br/>
+        Support Team<br/>
+        DevTinder</p>
+      </body>
+      </html>
+    `;
+    const email = await sendEmail.run(emailId, subject, emailBody);
     //Generate a JWT
     const token = user.getJWT();
     res.cookie("token", token);

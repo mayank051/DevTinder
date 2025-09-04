@@ -2,13 +2,14 @@
 const { SendEmailCommand } = require("@aws-sdk/client-ses");
 const { sesClient } = require("./sesClient.js");
 
-const createSendEmailCommand = (toAddress, fromAddress, subject, emailBody) => {
+const createSendEmailCommand = (fromAddress, subject, emailBody) => {
+  console.log("Mayank");
   return new SendEmailCommand({
     Destination: {
       CcAddresses: [
         /* more cc email address */
       ],
-      ToAddresses: [toAddress],
+      ToAddresses: ["mayank051raj@gmail.com"],
     },
     Message: {
       /* required */
@@ -35,9 +36,8 @@ const createSendEmailCommand = (toAddress, fromAddress, subject, emailBody) => {
   });
 };
 
-const run = async (toEmailId, subject, emailBody) => {
+const run = async (subject, emailBody) => {
   const sendEmailCommand = createSendEmailCommand(
-    toEmailId,
     "support@mayankraj-dev.in",
     subject,
     emailBody

@@ -51,3 +51,14 @@ Backend = devTinder.com:3000 => devTinder.com/api (port 3000 is mapped to path /
     - Write code for SESClient
     - Write code for Sending Email address
     - Make the email dynamic
+
+# Scheduling cron jobs in NodeJS
+
+    - Installing node-cron
+    - Learning about cron expressions syntax - crontab.guru
+    - Schedule a job
+    - date-fns
+    - Find all unique emai Id who have got connection Request in prebvious day
+    - Send Email
+    - Explore queue mechanism to send bulk emails(bee-queue & bull npm packages)
+    - Amazon SES Bulk Emails
